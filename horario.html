@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icons/icon-192x192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="./images/icons/iconApp.png" sizes="180x180">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="msapplication-TileImage" content="./icons/icon-144x144.png">
+  <meta name="theme-color" content="#0b0f17">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Horario 10°A‑IDGS · Sep–Dic 2025</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ================================== */
+    /* === Estilo "Liquid Glass" Anime === */
+    /* ================================== */
+    :root {
+      /* Modo Oscuro (por defecto) */
+      --bg-main: #1a0f30; /* Fondo principal oscuro */
+      --bg-gradient-1: rgba(150, 80, 255, 0.4);
+      --bg-gradient-2: rgba(0, 180, 255, 0.35);
+      --bg-gradient-3: rgba(255, 120, 200, 0.3);
+      --bg-linear: linear-gradient(160deg, #2a0a5a, #0f051e);
+
+      --glass-bg: rgba(45, 30, 70, 0.35); /* Fondo del panel translúcido */
+      --glass-border: rgba(180, 200, 255, 0.2);
+      --glass-blur: blur(25px);
+      --glass-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.4);
+
+      --text: #e0eaff;
+      --muted: #b0c4e8;
+      --grid: rgba(200, 220, 255, 0.15);
+
+      --toolbar-btn-bg: rgba(80, 50, 120, 0.4);
+      --toolbar-btn-hover-bg: rgba(100, 60, 150, 0.6);
+      --card-dim-filter: grayscale(.2) brightness(.8);
+      --now-bg: rgba(60, 40, 90, 0.5);
+      --week-container-bg: rgba(30, 20, 60, 0.4);
+      --week-header-bg: rgba(255, 255, 255, 0.08);
+      --week-header-text: #d0e0ff;
+      --week-hour-text: #b0c4e8;
+      --chip-bg: rgba(255, 255, 255, 0.1);
+      --chip-border: rgba(255, 255, 255, 0.15);
+      --chip-text: #ebf2ff;
+
+      /* Colores de materia - Gamas de colores más vivos y gradientes dinámicos */
+      --c-apps: linear-gradient(135deg, #00e0b0, #008f70); /* Verde menta a esmeralda */
+      --c-gestion: linear-gradient(135deg, #4da6ff, #007bff); /* Azul cielo a eléctrico */
+      --c-movil: linear-gradient(135deg, #a07bff, #6c3eff); /* Lavanda a púrpura vibrante */
+      --c-integradora: linear-gradient(135deg, #ff80c0, #e040a0); /* Rosa chicle a fucsia */
+      --c-optativa: linear-gradient(135deg, #ffc04d, #ffa000); /* Naranja melocotón a dorado */
+      --c-nego: linear-gradient(135deg, #ff6b6b, #e03d3d); /* Rojo coral a carmesí */
+      --c-ingles: linear-gradient(135deg, #66d9ef, #00a8c6); /* Cian brillante a turquesa */
+
+      /* Colores de "Glow" para la vista de escritorio - más intensos */
+      --c-apps-glow: rgba(0, 224, 176, 0.5);
+      --c-gestion-glow: rgba(77, 166, 255, 0.5);
+      --c-movil-glow: rgba(160, 123, 255, 0.6);
+      --c-integradora-glow: rgba(255, 128, 192, 0.5);
+      --c-optativa-glow: rgba(255, 192, 77, 0.5);
+      --c-nego-glow: rgba(255, 107, 107, 0.5);
+      --c-ingles-glow: rgba(102, 217, 239, 0.5);
+    }
+
+    /* Modo Claro */
+    body.light-mode {
+      --bg-main: #f0f5ff; /* Fondo principal claro */
+      --bg-gradient-1: rgba(180, 200, 255, 0.4);
+      --bg-gradient-2: rgba(150, 230, 255, 0.35);
+      --bg-gradient-3: rgba(255, 200, 220, 0.3);
+      --bg-linear: linear-gradient(160deg, #e0eaff, #ffffff);
+
+      --glass-bg: rgba(255, 255, 255, 0.7); /* Fondo del panel más claro y opaco */
+      --glass-border: rgba(180, 200, 255, 0.4);
+      --glass-blur: blur(20px); /* Un poco menos de blur para que no se vea tan pesado */
+      --glass-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.1); /* Sombra más suave */
+
+      --text: #2a354d; /* Texto oscuro */
+      --muted: #6b7a99; /* Texto muted oscuro */
+      --grid: rgba(0, 0, 0, 0.1);
+
+      --toolbar-btn-bg: rgba(255, 255, 255, 0.7);
+      --toolbar-btn-hover-bg: rgba(255, 255, 255, 0.9);
+      --card-dim-filter: grayscale(.1) brightness(1.05);
+      --now-bg: rgba(255, 255, 255, 0.8);
+      --week-container-bg: rgba(255, 255, 255, 0.7);
+      --week-header-bg: rgba(0, 0, 0, 0.05);
+      --week-header-text: #4a5568;
+      --week-hour-text: #6b7a99;
+      --chip-bg: rgba(0, 0, 0, 0.08);
+      --chip-border: rgba(0, 0, 0, 0.1);
+      --chip-text: #3c4d6c;
+
+      /* Glows en modo claro: ligeramente ajustados para que no saturen tanto */
+      --c-apps-glow: rgba(0, 200, 150, 0.3);
+      --c-gestion-glow: rgba(50, 140, 255, 0.3);
+      --c-movil-glow: rgba(150, 100, 255, 0.4);
+      --c-integradora-glow: rgba(255, 100, 180, 0.3);
+      --c-optativa-glow: rgba(255, 170, 0, 0.3);
+      --c-nego-glow: rgba(255, 80, 80, 0.3);
+      --c-ingles-glow: rgba(80, 200, 220, 0.3);
+
+      /* Los badges se mantienen con los mismos gradientes vibrantes para que destaquen */
+    }
+
+
+    html, body { 
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      
+      background: radial-gradient(circle at 15% 25%, var(--bg-gradient-1), transparent 40%),
+                  radial-gradient(circle at 85% 75%, var(--bg-gradient-2), transparent 35%),
+                  radial-gradient(circle at 40% 60%, var(--bg-gradient-3), transparent 45%),
+                  var(--bg-linear);
+                  
+      min-height: 100vh;
+      background-attachment: fixed;
+      background-size: cover;
+      transition: background-color .5s ease, color .5s ease; /* Transición suave de modo */
+    }
+
+    .wrap {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 24px 16px 32px;
+      min-height: auto;
+    }
+    
+    header h1 { margin: 0; font-size: clamp(20px, 2.6vw, 28px); letter-spacing: -.2px; }
+    header p { margin: .25rem 0 0; color: var(--muted); font-size: 14px; }
+    .toolbar { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* Estilo "Glass" para botones y selectores */
+    button, select {
+      background: var(--toolbar-btn-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      color: var(--text);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      cursor: pointer;
+      transition: background .3s ease, border-color .3s ease, box-shadow .3s ease, color .3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    button:hover, select:hover {
+      background: var(--toolbar-btn-hover-bg);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .ghost { background: transparent; box-shadow: none; }
+    .icon-btn { 
+      width: 50px;
+      height: 50px; 
+      display: inline-flex; 
+      align-items: center; 
+      justify-content: center; 
+      border-radius: 16px; 
+      padding: 8px; 
+      font-size: 14px;
+    }
+    .icon-btn svg { color: var(--muted); width: 22px; height: 22px; transition: color .3s ease; }
+
+    /* Vista móvil: lista por día */
+    .day-view { display: grid; gap: 16px; margin-top: 24px; }
+    .day-picker { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .subtitle { color: var(--muted); font-size: 14px; transition: color .3s ease; }
+
+    /* Estilo "Glass" para las tarjetas (móvil) */
+    .card {
+      border-radius: 28px;
+      padding: 24px 24px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s ease, box-shadow .3s ease, background .3s ease, border-color .3s ease;
+    }
+    
+    .card:before { display: none; }
+    
+    @media (max-width: 899px) { 
+      .day-view .card { margin-bottom: 16px; } 
+    }
+    
+    .card .title { font-weight: 700; font-size: 20px; line-height: 1.1; color: var(--text); transition: color .3s ease; }
+    .card .meta { font-size: 15px; color: var(--muted); transition: color .3s ease; }
+    .chip {
+      display: inline-block;
+      font-size: 12px;
+      padding: .3rem .7rem;
+      border-radius: 999px;
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      color: var(--chip-text);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+      transition: background .3s ease, border-color .3s ease, color .3s ease;
+    }
+
+    /* Badge de color (se mantiene el color vibrante, pero más grande y redondeado) */
+    .badge {
+      position: absolute;
+      inset: auto 18px 18px auto;
+      font-size: 13px;
+      padding: .4rem .7rem;
+      border-radius: 16px;
+      font-weight: 700;
+      color: #051016; /* Color de texto oscuro para que resalte sobre el gradiente */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .apps { background: var(--c-apps); }
+    .gestion { background: var(--c-gestion); }
+    .movil { background: var(--c-movil); }
+    .integ { background: var(--c-integradora); }
+    .optativa { background: var(--c-optativa); }
+    .nego { background: var(--c-nego); }
+    .ingles { background: var(--c-ingles); }
+
+    /* Resaltado de clase actual (con "Glow" blanco anime) */
+    .now {
+      border-color: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+      background: var(--now-bg);
+    }
+    .now .title {
+      filter: drop-shadow(0 2px 12px rgba(255, 255, 255, 0.8));
+    }
+    
+    .next {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, .5);
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, .2);
+    }
+    
+    .dim { opacity: 0.5; filter: var(--card-dim-filter); transform: none; }
+    .near { opacity: 0.85; transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 35px rgba(0, 0, 0, .6); }
+    .now { opacity: 1; transform: translateY(-8px) scale(1.04); }
+    .next { transform: translateY(-5px); }
+    
+    /* Animaciones para indicar actividad */
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), var(--subject-glow-current, transparent); border-color: rgba(255, 255, 255, 0.5); }
+      50% { box-shadow: 0 0 45px rgba(255, 255, 255, 0.8), var(--subject-glow-current, transparent); border-color: rgba(255, 255, 255, 0.9); }
+      100% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), var(--subject-glow-current, transparent); border-color: rgba(255, 255, 255, 0.5); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0 }
+      100% { background-position: 200% 0 }
+    }
+
+    .now.animated {
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+    .near.animated {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2.5s linear infinite;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .now.animated, .near.animated { animation: none; }
+    }
+
+
+    /* Vista escritorio: grid semanal */
+    .week { display: none; }
+    @media (min-width: 900px) {
+      .day-view { display: none; }
+      .week {
+        display: grid;
+        margin-top: 24px;
+        border-radius: 28px;
+        overflow: hidden;
+        
+        background: var(--week-container-bg);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
+      }
+      .week .header {
+        display: grid;
+        grid-template-columns: 120px repeat(5, 1fr);
+        background: var(--week-header-bg);
+        border-bottom: 1px solid var(--grid);
+        transition: background .3s ease, border-color .3s ease;
+      }
+      .week .header div { padding: 14px 16px; font-weight: 700; color: var(--week-header-text); font-size: 15px; transition: color .3s ease; }
+      .week .row { display: grid; grid-template-columns: 120px repeat(5, 1fr); }
+      .hour {
+        padding: 14px 12px;
+        color: var(--week-hour-text);
+        font-size: 13px;
+        text-align: right;
+        border-right: 1px solid var(--grid);
+        background: transparent;
+        transition: color .3s ease, border-color .3s ease;
+      }
+      .cell {
+        min-height: 80px;
+        border-left: 1px solid var(--grid);
+        border-bottom: 1px dashed var(--grid);
+        padding: 10px;
+        transition: border-color .3s ease;
+      }
+      
+      /* Mini-tarjeta "Glass" (escritorio) */
+      .mini {
+        padding: 12px;
+        border-radius: 12px;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 13px;
+        position: relative;
+        
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        
+        background: var(--glass-bg) !important; /* Ahora usa la variable glass-bg */
+        transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
+      }
+
+      .mini .when, .mini .room {
+        display: block;
+        margin-top: 5px;
+        font-weight: 600;
+        font-size: 12px;
+        color: var(--text);
+        opacity: 0.9;
+        transition: color .3s ease;
+      }
+
+      /* Colores de "Glow" para las mini-cards */
+      .mini.apps { box-shadow: 0 8px 30px var(--c-apps-glow); }
+      .mini.gestion { box-shadow: 0 8px 30px var(--c-gestion-glow); }
+      .mini.movil { box-shadow: 0 8px 30px var(--c-movil-glow); }
+      .mini.integ { box-shadow: 0 8px 30px var(--c-integradora-glow); }
+      .mini.optativa { box-shadow: 0 8px 30px var(--c-optativa-glow); }
+      .mini.nego { box-shadow: 0 8px 30px var(--c-nego-glow); }
+      .mini.ingles { box-shadow: 0 8px 30px var(--c-ingles-glow); }
+
+      /* Estado "Now" en escritorio: añade el glow blanco sin perder el de color */
+      .mini.now {
+        border-color: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 8px 30px var(--subject-glow, transparent), 0 0 25px rgba(255, 255, 255, 0.8);
+        transform: scale(1.03);
+      }
+      
+      /* Re-mapeo de variables de glow para que se combinen con .now */
+      .mini.apps { --subject-glow: var(--c-apps-glow); --subject-glow-current: rgba(0, 224, 176, 0.8); }
+      .mini.gestion { --subject-glow: var(--c-gestion-glow); --subject-glow-current: rgba(77, 166, 255, 0.8); }
+      .mini.movil { --subject-glow: var(--c-movil-glow); --subject-glow-current: rgba(160, 123, 255, 0.9); }
+      .mini.integ { --subject-glow: var(--c-integradora-glow); --subject-glow-current: rgba(255, 128, 192, 0.8); }
+      .mini.optativa { --subject-glow: var(--c-optativa-glow); --subject-glow-current: rgba(255, 192, 77, 0.8); }
+      .mini.nego { --subject-glow: var(--c-nego-glow); --subject-glow-current: rgba(255, 107, 107, 0.8); }
+      .mini.ingles { --subject-glow: var(--c-ingles-glow); --subject-glow-current: rgba(102, 217, 239, 0.8); }
+
+      .mini.now.animated {
+        animation: pulseGlow 2s ease-in-out infinite;
+      }
+    }
+    
+    /* Leyenda */
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+    
+    @media (max-width: 899px) {
+      .legend { display: none; }
+      .legend.open {
+        display: grid;
+        border-radius: 28px;
+        padding: 20px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
+      }
+    }
+    
+    .legend .item { display: flex; gap: 12px; align-items: center; }
+    .swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    
+    .day-picker { z-index: 40; }
+    .toolbar { position: relative; z-index: 20; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header id="appHeader">
+      <div id="mobileHeader" style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div id="currentDay" style="font-weight:700;font-size:18px"></div>
+            <div id="currentDate" style="color:var(--muted);font-size:13px"></div>
+          </div>
+          <div style="text-align:right">
+            <div id="currentTime" style="font-weight:700;font-size:18px"></div>
+            <div style="font-size:12px;color:var(--muted)">Hora local</div>
+          </div>
+        </div>
+        <div class="toolbar" style="align-items:center;gap:8px">
+          <button id="btnToggleDay" title="Seleccionar día" aria-label="Seleccionar día" class="icon-btn"> 
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="btnToggleLegend" title="Mostrar leyenda" aria-label="Mostrar legend" class="icon-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="btnToggleFormat" title="Cambiar formato 12/24" aria-label="Cambiar formato" class="icon-btn">12/24</button>
+          <button id="btnToggleTheme" title="Alternar tema" aria-label="Alternar tema" class="icon-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v1m0 16v1m9-9h1M3 12h1m15.657-6.343l-.707.707M4.343 19.657l-.707.707m14.85-2.121l.707.707M3.536 4.343l.707.707M12 7a5 5 0 100 10 5 5 0 000-10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="day-view" id="dayView">
+      <div class="day-picker" id="dayPicker" style="display:none;">
+        <span class="subtitle">Día:</span>
+        <select id="daySelect" aria-label="Selecciona día"></select>
+      </div>
+      <div id="dayCards"></div>
+    </section>
+
+    <section class="week" id="weekGrid" aria-label="Semana completa">
+      <div class="header">
+        <div>Hora</div>
+        <div>Lunes</div>
+        <div>Martes</div>
+        <div>Miércoles</div>
+        <div>Jueves</div>
+        <div>Viernes</div>
+      </div>
+      <div id="weekBody"></div>
+    </section>
+
+    <section class="legend" aria-label="Colores de materias" id="legend">
+      </section>
+  </div>
+
+  <script>
+    /* ===================
+        Datos del horario
+    ==================== */
+    const DAYS = ["Lunes","Martes","Miércoles","Jueves","Viernes"]; // sábado vacío
+    const EVENTS = [
+      // Lunes
+      { d:"Lunes", h:"16:00", e:"17:00", t:"Aplicaciones web progresivas", a:"CC10/CECADEC", p:"José Christian Narváez Figueroa", k:"apps" },
+      { d:"Lunes", h:"17:00", e:"18:00", t:"Aplicaciones web progresivas", a:"CC10/CECADEC", p:"José Christian Narváez Figueroa", k:"apps" },
+      { d:"Lunes", h:"18:00", e:"19:00", t:"Gestión Proc. Des. Soft", a:"CC1/CEDIM", p:"Ángel Yazveck Alcocer Durán", k:"gestion" },
+      { d:"Lunes", h:"19:00", e:"20:00", t:"Optativa I: Creación de videojuegos", a:"CC11/D4", p:"David Navas Landa", k:"optativa" },
+      { d:"Lunes", h:"20:00", e:"21:00", t:"Desarrollo móvil integral", a:"CC2/CEDIM", p:"Maximiliano Carsi Castrejón", k:"movil" },
+      // Martes
+      { d:"Martes", h:"15:00", e:"16:00", t:"Inglés IX", a:"A1/D1", p:"Sughey Adriana Moreno Arellano", k:"ingles" },
+      { d:"Martes", h:"16:00", e:"17:00", t:"Aplicaciones web progresivas", a:"CC10/CECADEC", p:"José Christian Narváez Figueroa", k:"apps" },
+      { d:"Martes", h:"17:00", e:"18:00", t:"Optativa I: Creación de videojuegos", a:"CC11/D4", p:"David Navas Landa", k:"optativa" },
+      { d:"Martes", h:"18:00", e:"19:00", t:"Optativa I: Creación de videojuegos", a:"CC11/D4", p:"David Navas Landa", k:"optativa" },
+      { d:"Martes", h:"19:00", e:"20:00", t:"Desarrollo móvil integral", a:"CA3/D4", p:"Maximiliano Carsi Castrejón", k:"movil" },
+      { d:"Martes", h:"20:00", e:"21:00", t:"Desarrollo móvil integral", a:"CA3/D4", p:"Maximiliano Carsi Castrejón", k:"movil" },
+      // Miércoles
+      { d:"Miércoles", h:"16:00", e:"17:00", t:"Gestión Proc. Des. Soft", a:"CC11/D4", p:"Ángel Yazveck Alcocer Durán", k:"gestion" },
+      { d:"Miércoles", h:"17:00", e:"18:00", t:"Inglés IX", a:"A5/D1", p:"Sughey Adriana Moreno Arellano", k:"ingles" },
+      { d:"Miércoles", h:"18:00", e:"19:00", t:"Inglés IX", a:"A5/D1", p:"Sughey Adriana Moreno Arellano", k:"ingles" },
+      { d:"Miércoles", h:"19:00", e:"20:00", t:"Negociación empresarial", a:"A4/D1", p:"Alfredo Hugo Silva García", k:"nego" },
+      { d:"Miércoles", h:"20:00", e:"21:00", t:"Optativa I: Creación de videojuegos", a:"CC11/D4", p:"David Navas Landa", k:"optativa" },
+      // Jueves
+      { d:"Jueves", h:"17:00", e:"18:00", t:"Integradora", a:"A6/D1", p:"Alfonso Bahena Ramírez", k:"integ" },
+      { d:"Jueves", h:"18:00", e:"19:00", t:"Integradora", a:"A6/D1", p:"Alfonso Bahena Ramírez", k:"integ" },
+      { d:"Jueves", h:"19:00", e:"20:00", t:"Desarrollo móvil integral", a:"CC2/CEDIM", p:"Maximiliano Carsi Castrejón", k:"movil" },
+      { d:"Jueves", h:"20:00", e:"21:00", t:"Desarrollo móvil integral", a:"CC2/CEDIM", p:"Maximiliano Carsi Castrejón", k:"movil" },
+      // Viernes
+      { d:"Viernes", h:"15:00", e:"16:00", t:"Inglés IX", a:"A9/D1", p:"Sughey Adriana Moreno Arellano", k:"ingles" },
+      { d:"Viernes", h:"16:00", e:"17:00", t:"Desarrollo móvil integral", a:"CC1/CEDIM", p:"Maximiliano Carsi Castrejón", k:"movil" },
+      { d:"Viernes", h:"17:00", e:"18:00", t:"Negociación empresarial", a:"Sala 4 Doc 4", p:"Alfredo Hugo Silva García", k:"nego" },
+      { d:"Viernes", h:"18:00", e:"19:00", t:"Gestión Proc. Des. Soft", a:"CC10/CECADEC", p:"Ángel Yazveck Alcocer Durán", k:"gestion" },
+      { d:"Viernes", h:"19:00", e:"20:00", t:"Gestión Proc. Des. Soft", a:"CC10/CECADEC", p:"Ángel Yazveck Alcocer Durán", k:"gestion" },
+    ];
+
+    /* Utilidades */
+    const toMin = (s)=>{const [h,m]=s.split(":").map(Number); return h*60+m};
+    const fmt = (n)=> String(n).padStart(2,"0");
+    // Formato hora: 12 o 24 (persistente)
+    function getHourFormat(){ return localStorage.getItem('hourFormat') || '12'; }
+    function toggleHourFormat(){ const f = getHourFormat() === '12' ? '24' : '12'; localStorage.setItem('hourFormat', f); return f; }
+    function formatTime(t){ const [H,M]=t.split(':').map(Number); if(getHourFormat()==='24') return `${String(H).padStart(2,'0')}:${String(M).padStart(2,'0')}`; const am = H<12; const h = ((H+11)%12)+1; return `${h}:${String(M).padStart(2,'0')} ${am? 'AM':'PM'}`; }
+
+    /* ====== Day View (móvil) ====== */
+    const daySel = document.getElementById('daySelect');
+    const dayCards = document.getElementById('dayCards');
+    DAYS.forEach(d=>{const o=document.createElement('option'); o.value=d; o.textContent=d; daySel.appendChild(o)});
+
+    function renderDay(day, highlightNow=true){
+      daySel.value = day;
+      dayCards.innerHTML = '';
+      const list = EVENTS.filter(e=>e.d===day).sort((a,b)=> toMin(a.h)-toMin(b.h));
+      const now = new Date();
+      const nowMin = now.getHours()*60 + now.getMinutes();
+      let scrolled=false;
+      // Marcadores calculados: obtener índices de eventos que están ahora, near, next
+      const marks = computeNowHighlight(list, nowMin, highlightNow);
+      // decidir índice 'nearest' a animar cuando NO hay now
+      let nearestIndex = -1;
+      if(marks.nowIndexes.size===0){
+        // preferir near si existe, sino next
+        if(marks.nearIndexes.size>0){ nearestIndex = Math.min(...Array.from(marks.nearIndexes)); }
+        else if(marks.nextIndexes.size>0){ nearestIndex = Math.min(...Array.from(marks.nextIndexes)); }
+      }
+      list.forEach((ev, idx)=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        // aplicar clases según marks: dim por defecto
+        card.classList.add('dim');
+        if(marks.nowIndexes.has(idx)){
+          // evento actual: siempre animar
+          card.classList.remove('dim'); card.classList.add('now'); card.classList.add('animated');
+        } else if(nearestIndex===idx){
+          // no hay now: animar solo la clase más cercana
+          // marcar como near si estaba dentro del umbral, si no usar 'next'
+          if(marks.nearIndexes.has(idx)){
+            card.classList.remove('dim'); card.classList.add('near'); card.classList.add('animated');
+          } else {
+            card.classList.remove('dim'); card.classList.add('next'); card.classList.add('animated');
+          }
+        } else if(marks.nearIndexes.has(idx)){
+          // otros cercanos sin animación
+          card.classList.remove('dim'); card.classList.add('near');
+        } else if(marks.nextIndexes.has(idx)){
+          card.classList.remove('dim'); card.classList.add('next');
+        }
+    const when = formatTime(ev.h) + ' – ' + formatTime(ev.e);
+        card.innerHTML = `
+          <div class="title">${ev.t}</div>
+          <div class="meta">${when} · <span class="chip">${ev.a}</span></div>
+          <div class="meta" style="margin-top:6px">${ev.p}</div>
+          <span class="badge ${ev.k}">${ev.d}</span>
+        `;
+        // scroll al primer ahora
+        if(marks.firstNowIndex===idx && !scrolled){
+          setTimeout(()=> card.scrollIntoView({behavior:'smooth', block:'center'}), 50);
+          scrolled=true;
+        }
+        dayCards.appendChild(card);
+      });
+      if(list.length===0){
+        const empty=document.createElement('div');
+        empty.className='card';
+        empty.innerHTML='<div class="title">Sin clases</div><div class="meta">Disfruta tu día ✨</div>';
+        dayCards.appendChild(empty);
+      }
+    }
+
+    daySel.addEventListener('change', e=> renderDay(e.target.value, false));
+
+    /* ====== Week Grid (escritorio) ====== */
+    const weekBody = document.getElementById('weekBody');
+    const HOURS = ["15:00","16:00","17:00","18:00","19:00","20:00"]; // filas
+
+    function renderWeek(){
+      weekBody.innerHTML='';
+      const now = new Date();
+      const nowMin = now.getHours()*60 + now.getMinutes();
+      HOURS.forEach(hr=>{
+        const row = document.createElement('div'); row.className = 'row';
+        const hourCell = document.createElement('div'); hourCell.className = 'hour'; hourCell.textContent = to12(hr); row.appendChild(hourCell);
+        DAYS.forEach(day=>{
+          const cell = document.createElement('div'); cell.className = 'cell';
+          const items = EVENTS.filter(e=>e.d===day && e.h===hr);
+          // compute marks for this day's items to decide nearest
+          const dayList = EVENTS.filter(e=>e.d===day).sort((a,b)=> toMin(a.h)-toMin(b.h));
+          const dayMarks = computeNowHighlight(dayList, nowMin, true);
+          let nearestIdxForDay = -1;
+          if(dayMarks.nowIndexes.size===0){
+            if(dayMarks.nearIndexes.size>0) nearestIdxForDay = Math.min(...Array.from(dayMarks.nearIndexes));
+            else if(dayMarks.nextIndexes.size>0) nearestIdxForDay = Math.min(...Array.from(dayMarks.nextIndexes));
+          }
+          items.forEach(ev=>{
+            const mini = document.createElement('div'); mini.className = `mini ${ev.k} dim`;
+            const when = formatTime(ev.h) + ' – ' + formatTime(ev.e);
+            // detectar estado ahora / cerca para la mini-card
+            const start = toMin(ev.h), end = toMin(ev.e);
+            if(nowMin >= start && nowMin < end){
+              mini.classList.remove('dim'); mini.classList.add('now','animated');
+            } else {
+              // find index of this ev within dayList to compare with nearestIdxForDay
+              const idxInDay = dayList.findIndex(x=> x.h===ev.h && x.t===ev.t && x.a===ev.a);
+              if(nearestIdxForDay===idxInDay){
+                // animate only the nearest upcoming if no now
+                if(dayMarks.nearIndexes.has(idxInDay)) mini.classList.remove('dim'), mini.classList.add('near','animated');
+                else mini.classList.remove('dim'), mini.classList.add('next','animated');
+              } else if(nowMin < start && (start - nowMin) <= 20){
+                mini.classList.remove('dim'); mini.classList.add('near');
+              } else if(nowMin < start){
+                mini.classList.remove('dim'); mini.classList.add('next');
+              }
+            }
+            mini.innerHTML = `<div>${ev.t}</div><span class="when">${when}</span><span class="room">${ev.a}</span>`;
+            cell.appendChild(mini);
+          });
+          row.appendChild(cell);
+        });
+        weekBody.appendChild(row);
+      });
+    }
+
+    /* ====== Detección de día/hora actual ====== */
+    function todayIndex(){
+      const i = new Date().getDay(); // 0=Dom,1=Lun…
+      return Math.min(Math.max(i-1,0),4); // 0..4
+    }
+    function dayIndexFromName(n){ return DAYS.indexOf(n); }
+
+    function detectNow(){
+      const d = DAYS[todayIndex()] || 'Lunes';
+      renderDay(d, true);
+    }
+
+    // Toggle selector de día (móvil)
+    document.getElementById('btnToggleDay').addEventListener('click', ()=>{
+      const dp = document.getElementById('dayPicker'); if(!dp) return; dp.style.display = dp.style.display==='none'? 'flex':'none';
+    });
+
+    // Inicializar UI
+    renderWeek();
+    detectNow();
+    // iniciar reloj y resaltado periódicos (cada 15s)
+    updateClock();
+    setInterval(()=>{ updateClock(); const d = DAYS[todayIndex()]; renderDay(d, true); }, 15000);
+    // Generar leyenda dinámica: materia -> profesores
+    function buildLegend(){
+      const map = new Map();
+      EVENTS.forEach(ev=>{
+        const key = ev.t;
+        if(!map.has(key)) map.set(key, {prof: new Set(), k: ev.k});
+        map.get(key).prof.add(ev.p);
+      });
+      const legend = document.getElementById('legend');
+      legend.innerHTML = '';
+      // mapping short keys to actual CSS variable suffix when they differ
+      const cssVarMapLegend = { integ: 'integradora' };
+      map.forEach((v, subject)=>{
+        const item = document.createElement('div'); item.className='item';
+        const sw = document.createElement('span'); sw.className='swatch';
+        // try CSS variable first
+        const varName = cssVarMapLegend[v.k] || v.k;
+        let bg = getComputedStyle(document.documentElement).getPropertyValue(`--c-${varName}`);
+        if(!bg || !bg.trim()){
+          // fallback: try reading computed background from an element with the same class
+          const tmp = document.createElement('div'); tmp.style.display='none'; tmp.className = v.k; document.body.appendChild(tmp);
+          bg = getComputedStyle(tmp).background || '';
+          document.body.removeChild(tmp);
+        }
+        sw.style.background = (bg && bg.trim()) ? bg.trim() : '#666';
+        const txt = document.createElement('div'); txt.innerHTML = `<strong>${subject}</strong><div style="font-size:12px;color:var(--muted)">${Array.from(v.prof).join(', ')}</div>`;
+        item.appendChild(sw); item.appendChild(txt); legend.appendChild(item);
+      });
+    }
+    buildLegend();
+
+    // Legend toggle
+    document.getElementById('btnToggleLegend').addEventListener('click', ()=>{
+      const lg = document.getElementById('legend'); if(!lg) return; lg.classList.toggle('open');
+    });
+
+    // Format toggle
+    const fmtBtn = document.getElementById('btnToggleFormat');
+    if(fmtBtn){ fmtBtn.addEventListener('click', ()=>{ const f = toggleHourFormat(); fmtBtn.textContent = f==='12' ? '12/24' : '24/12'; renderWeek(); const d = DAYS[todayIndex()]; renderDay(d, true); }); }
+
+    // util: convertir 24h "HH:MM" a 12h "h:MM AM/PM"
+    function to12(t){
+      const [H,M]=t.split(':').map(Number);
+      const am = H<12; const h = ((H+11)%12)+1; return `${h}:${String(M).padStart(2,'0')} ${am? 'AM':'PM'}`;
+    }
+
+    // Actualiza el header con día, fecha y hora locales
+    function updateClock(){
+      const now = new Date();
+      const dayName = DAYS[todayIndex()] || 'Lunes';
+      const dateStr = now.toLocaleDateString(undefined, {weekday:'long', year:'numeric', month:'short', day:'numeric'});
+      const timeStr = now.toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'});
+      const dayEl = document.getElementById('currentDay');
+      const dateEl = document.getElementById('currentDate');
+      const timeEl = document.getElementById('currentTime');
+      if(dayEl) dayEl.textContent = dayName;
+      if(dateEl) dateEl.textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+      if(timeEl) timeEl.textContent = timeStr;
+    }
+
+    
+
+    // Determina índices de eventos actuales y siguientes en la lista (por orden)
+    // Clasifica en: nowIndexes (actual), nearIndexes (poco antes), nextIndexes (la siguiente después de now), dim por defecto
+    function computeNowHighlight(list, nowMin, highlightNow){
+      const nowIndexes = new Set();
+      const nearIndexes = new Set();
+      const nextIndexes = new Set();
+      let firstNowIndex = -1;
+      if(!highlightNow) return {nowIndexes, nearIndexes, nextIndexes, firstNowIndex};
+    // Umbrales (minutos)
+    const nearThreshold = 20; // minutos antes
+
+      for(let i=0;i<list.length;i++){
+        const ev = list[i];
+        let start = toMin(ev.h), end = toMin(ev.e);
+        // Si ahora está dentro del evento
+        if(nowMin>=start && nowMin<end){
+          // marcar sólo el evento actual (no unir consecutivos)
+          firstNowIndex = i;
+          nowIndexes.add(i);
+          // la siguiente inmediata
+          if(i+1 < list.length) nextIndexes.add(i+1);
+          break; // ya encontramos el evento actual
+        }
+        // Si ahora está antes del evento pero dentro del umbral 'near'
+        if(nowMin < start && (start - nowMin) <= nearThreshold){
+          nearIndexes.add(i);
+          // no rompemos: puede haber otro más cercano
+        }
+        // Si ahora está antes y no dentro de near y no hay now, marcar el primer futuro como next
+        if(nowMin < start && nextIndexes.size===0 && nowIndexes.size===0){
+          nextIndexes.add(i); break;
+        }
+      }
+      return {nowIndexes, nearIndexes, nextIndexes, firstNowIndex};
+    }
+
+    /* ====== Funcionalidad de Modo Claro/Oscuro ====== */
+    const body = document.body;
+    const themeToggleButton = document.getElementById('btnToggleTheme');
+    const THEME_KEY = 'themePreference';
+
+    // Función para aplicar el tema
+    function applyTheme(theme) {
+      if (theme === 'light') {
+        body.classList.add('light-mode');
+        // Actualizar el icono del botón si es necesario (ej. sol para modo claro, luna para oscuro)
+        themeToggleButton.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      } else {
+        body.classList.remove('light-mode');
+        themeToggleButton.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v1m0 16v1m9-9h1M3 12h1m15.657-6.343l-.707.707M4.343 19.657l-.707.707m14.85-2.121l.707.707M3.536 4.343l.707.707M12 7a5 5 0 100 10 5 5 0 000-10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      }
+      // Volver a renderizar para que los colores se actualicen en los elementos con 'style' inline
+      renderWeek();
+      renderDay(daySel.value, true);
+      buildLegend();
+    }
+
+    // Inicializar el tema al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem(THEME_KEY);
+      if (savedTheme) {
+        applyTheme(savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        // Si no hay preferencia guardada, usar la preferencia del sistema
+        applyTheme('light');
+      } else {
+        applyTheme('dark'); // Por defecto a oscuro
+      }
+    });
+
+    // Manejador del botón para alternar el tema
+    if (themeToggleButton) {
+      themeToggleButton.addEventListener('click', () => {
+        const currentTheme = body.classList.contains('light-mode') ? 'light' : 'dark';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        localStorage.setItem(THEME_KEY, newTheme);
+        applyTheme(newTheme);
+      });
+    }
+
+  </script>
+  <script src="./register.js"></script>
+</body>
+</html>
